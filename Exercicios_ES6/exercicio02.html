@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exercicio 02</title>
+  </head>
+  <body>
+    <script>
+      /* Cria uma ligação à api https://cat-fact.herokuapp.com/facts/ com os 2 métodos que falamos: XMLHTTPRequest e 
+fetch;
+- Façam a resolução da ligação à API com uma promise, e façam resolve com o que é obtido pela API.
+- Façam uma função que faça console.log de todas as frases que estão na propriedade text
+*/
+
+      // Método XMLHTTPRequest:
+
+      function catFacts() {
+        return new Promise((resolve, reject) => {
+          const request = new XMLHttpRequest();
+          request.open("GET", "https://cat-fact.herokuapp.com/facts/");
+          request.responseType = "json";
+
+          request.onload = function () {
+            resolve(request.response);
+          };
+          request.onerror = function () {
+            reject("error!");
+          };
+
+          request.send();
+        });
+      }
+
+      function catFactTexts() {
+        catFacts()
+          .then((data) => {
+            data.forEach((fact) => {
+              console.log(fact.text);
+            });
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+
+      catFactTexts();
+
+      // Método Fetch:
+
+      function catFacts() {
+        return fetch("https://cat-fact.herokuapp.com/facts/").then((response) =>
+          response.json()
+        );
+      }
+
+      function catFactTexts() {
+        catFacts()
+          .then((data) => {
+            data.forEach((fact) => {
+              console.log(fact.text);
+            });
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+
+      catFactTexts();
+    </script>
+  </body>
+</html>
