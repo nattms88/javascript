@@ -57,7 +57,7 @@
       console.log(sumAges);
 
       // Faz console.log de um novo objeto que tenha as propriedades de name e category iguais a companies[0], usando o destructuring de objects;
-      const [{ name, category }] = companies[0];
+      const { name, category } = companies[0];
 
       const newObject = { name, category };
       console.log(newObject);
