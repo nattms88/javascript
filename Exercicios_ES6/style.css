@@ -1,0 +1,21 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.box {
+  border: 2px solid grey;
+  padding: 10px;
+  text-align: center;
+}
+
+.box img {
+  max-width: 200px;
+  height: 300px;
+}
+
+.card {
+  background-color: lightgray;
+  padding: 10px;
+}

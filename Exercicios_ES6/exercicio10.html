@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <script>
+      function animeList() {
+        return fetch("https://api.jikan.moe/v4/top/anime").then((response) =>
+          response.json()
+        );
+      }
+
+      function animeByTitle() {
+        animeList()
+          .then((data) => {
+            const highScoreAnimes = data.data.filter(
+              (anime) => anime.score > 9
+            );
+            highScoreAnimes.forEach((anime) => {
+              console.log(anime.title);
+            });
+            createGrid(highScoreAnimes);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+
+      function animeByImage() {
+        animeList()
+          .then((data) => {
+            const highScoreAnimes = data.data.filter(
+              (anime) => anime.score > 9
+            );
+            highScoreAnimes.forEach((anime) => {
+              console.log(anime.images.jpg.image_url);
+            });
+            createGrid(highScoreAnimes);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
+
+      function createGrid(animes) {
+        const divWrapper = document.createElement("div");
+        document.body.append(divWrapper);
+        divWrapper.classList.add("grid");
+
+        animes.forEach((anime) => {
+          const divBox = document.createElement("div");
+          divWrapper.append(divBox);
+          divBox.classList.add("box");
+
+          const img = document.createElement("img");
+          img.src = anime.images.jpg.image_url;
+          img.addEventListener("click", () => showCard(anime));
+          divBox.appendChild(img);
+
+          const title = document.createElement("p");
+          title.textContent = anime.title;
+          divBox.appendChild(title);
+        });
+
+        function showCard(anime) {
+          const existingCards = document.querySelectorAll(".card");
+          existingCards.forEach((card) => card.remove());
+
+          const card = document.createElement("div");
+          card.classList.add("card");
+
+          const genresList = anime.genres.map((genre) => genre.name).join(", ");
+
+          card.innerHTML = `
+          <p>Nome: ${anime.title}</p>
+          <p>Rating: ${anime.rating}</p>
+          <p>Data de Lançamento: ${anime.year}</p>
+          <p>Gênero: ${genresList}</p>
+          <p>Número de Episódios: ${anime.episodes}</p>
+          <p>Sinopse: ${anime.synopsis}</p>
+        `;
+          document.body.appendChild(card);
+        }
+
+        const footer = document.createElement("footer");
+        document.body.appendChild(footer);
+        footer.insertAdjacentHTML("beforeend", "<p>2024 © Natasha Caruso</p>");
+      }
+
+      animeByImage();
+    </script>
+  </body>
+</html>
