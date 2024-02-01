@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ecommerce homepage</title>
+    <link rel="stylesheet" href="./style2.css" />
+  </head>
+  <body>
+    <script>
+      function loadProductsAndDisplayGrid() {
+        fetch("https://fakestoreapi.com/products")
+          .then((response) => response.json())
+          .then((data) => {
+            createGrid(data);
+          })
+          .catch((error) => {
+            console.error("Erro ao carregar os produtos:", error);
+          });
+      }
+
+      function createGrid(products) {
+        const divWrapper = document.createElement("div");
+        document.body.append(divWrapper);
+        divWrapper.classList.add("grid");
+
+        products.forEach((product) => {
+          const divBox = document.createElement("div");
+          divWrapper.append(divBox);
+          divBox.classList.add("box");
+
+          const img = document.createElement("img");
+          img.src = product.image;
+          img.alt = product.title;
+          divBox.appendChild(img);
+
+          const name = document.createElement("p");
+          name.textContent = product.title;
+          divBox.appendChild(name);
+
+          const addToCartButton = document.createElement("button");
+          addToCartButton.textContent = "Add to cart";
+          addToCartButton.addEventListener("click", () => {
+            addToCart(product);
+          });
+          divBox.appendChild(addToCartButton);
+        });
+      }
+      function addToCart(product) {
+        const cartUpdateEndpoint = "https://fakestoreapi.com/carts/7";
+
+        const cartUpdateData = {
+          userId: 1234,
+          date: getCurrentDate(),
+          products: [
+            {
+              productId: product.id,
+              quantity: 1,
+            },
+          ],
+        };
+
+        fetch(cartUpdateEndpoint, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(cartUpdateData),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Produto adicionado ao carrinho:", data);
+          })
+          .catch((error) => {
+            console.error("Erro ao adicionar produto ao carrinho:", error);
+          });
+      }
+
+      function getCurrentDate() {
+        const currentDate = new Date();
+        const formattedDate = `${currentDate.getFullYear()}-${
+          currentDate.getMonth() + 1
+        }-${currentDate.getDate()}`;
+        return formattedDate;
+      }
+      loadProductsAndDisplayGrid();
+    </script>
+  </body>
+</html>

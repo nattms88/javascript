@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Class Ecommerce</title>
+  </head>
+  <body>
+    <script>
+      class Ecommerce {
+        constructor() {
+          this.products = [];
+          this.cart = [];
+        }
+        addProduct(product) {
+          this.products.push(product);
+        }
+
+        setProductPrice(productId, price) {
+          const product = this.getProductById(productId);
+          if (product) {
+            product.price = price;
+          }
+        }
+        getAllProducts() {
+          return this.products;
+        }
+        getAllProductsNames() {
+          return this.products.map((product) => product.name).join(";");
+        }
+        getProductById(id) {
+          return this.products.find((product) => product.id == productId);
+        }
+        getProductByName(name) {
+          return this.products.find((product) => product.name == productName);
+        }
+        getProductByPrice(initialPrice, finalPrice) {
+          return this.products.filter(
+            (product) =>
+              product.price >= initialPrice && product.price <= finalPrice
+          );
+        }
+        addProductToCart(product) {
+          this.cart.push(product);
+        }
+        getCart() {
+          return this.cart;
+        }
+        getCartTotalPrice() {
+          return this.cart.reduce((total, product) => total + product.price, 0);
+        }
+      }
+    </script>
+  </body>
+</html>
